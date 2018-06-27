@@ -221,4 +221,75 @@ TreeNode* KthNode(TreeNode* pRoot, int k)
     return nullptr;
 }
 
+// 数组中重复的第一个数字
+
+bool duplicate(int numbers[], int length, int* duplication) {
+    if (length <= 0)
+        return false;
+    bool dup[length];
+    memset(dup, false, length);
+    for (int i = 0; i < length; i++) {
+        if (dup[numbers[i]]) {
+            *duplication = numbers[i];
+            return true;
+        }
+        dup[numbers[i]] = true;
+    }
+    return false;
+}
+
+// 滑动窗口的最大值，使用双向队列实现，只需遍历一次数组，每个数组元素最多进出队列一次
+
+vector<int> maxInWindows(const vector<int>& num, unsigned int size)
+{
+    vector<int> r;
+    deque<int> d;
+    if (!size)
+        return r;
+    for (int i = 0; i < num.size(); i++) {
+        while (d.size() && num[d.back()] <= num[i])
+            d.pop_back();
+        while (d.size() && i - d.front() >= size)
+            d.pop_front();
+        d.push_back(i);
+        if (i + 1 >= size)
+            r.push_back(num[d.front()]);
+    }
+    return r;
+}
+
+// 全排列问题，从第一个字符起，对于它后面的每一个字符，如果该字符没出现过，则交换；否则不交换。
+
+// 依次选择，直到全部元素都确定位置。
+
+vector<string> Permutation(string str) {
+    vector<string> r;
+    if (str == "")
+        return r;
+    _Permutation(r, str, 0, str.size() - 1);
+    sort(r.begin(), r.end());
+    return r;
+}
+
+void _Permutation(vector<string> &result, string str, int start, int end) {
+    if (start == end)
+        result.push_back(str);;
+    for (int i = start; i <= end; i++) {
+        if (_isExisted(str, start, i-1, str[i]))
+            continue;
+        swap(str[i], str[start]); // 从 start 到 end 中选择第一个元素
+        _Permutation(result, str, start+1, end); // 确认剩余元素
+        swap(str[i], str[start]); // 回溯
+    }
+}
+ 
+bool _isExisted(string str, int start, int end, char c) {
+    for (int i = start; i <= end; i++)
+        if (str[i] == c)
+            return true;
+    return false;
+}
+
+
+
 
