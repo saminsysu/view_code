@@ -290,6 +290,45 @@ bool _isExisted(string str, int start, int end, char c) {
     return false;
 }
 
+// 翻转链表
+
+// 非递归
+
+ListNode* ReverseList(ListNode* pHead) {
+    if (pHead == nullptr || pHead -> next == nullptr)
+        return pHead;
+    ListNode* cur = pHead;
+    ListNode* next = cur -> next;
+    ListNode* pre = nullptr;
+    while (next) {
+        cur -> next = pre;
+        pre = cur;
+        cur = next;
+        next = next -> next;
+    }
+    cur -> next = pre;
+    return cur;
+}
+
+// 递归
+
+ListNode* ReverseList(ListNode* pHead) {
+    if (pHead == nullptr || pHead -> next == nullptr)
+        return pHead;
+    ListNode* r = ReverseList(pHead -> next);
+    pHead -> next -> next = pHead;
+    pHead -> next = nullptr; // 注意置为空
+    return r;
+}
+
+
+
+
+
+
+
+
+
 
 
 
