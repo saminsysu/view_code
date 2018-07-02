@@ -321,6 +321,24 @@ ListNode* ReverseList(ListNode* pHead) {
     return r;
 }
 
+// 删除链表中重复元素
+
+ListNode* deleteDuplication(ListNode* pHead)
+{
+    if (pHead == nullptr || pHead -> next == nullptr)
+        return pHead;
+    if (pHead -> next -> val == pHead -> val) {
+        ListNode* cur = nullptr;
+        cur = pHead -> next -> next;
+        while (cur != nullptr && cur -> val == pHead -> val)
+            cur = cur -> next;
+         return deleteDuplication(cur);
+    } else {
+        pHead -> next = deleteDuplication(pHead -> next);
+        return pHead;
+    }
+}
+
 
 
 
