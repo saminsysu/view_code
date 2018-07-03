@@ -339,14 +339,33 @@ ListNode* deleteDuplication(ListNode* pHead)
     }
 }
 
+// 输出链表倒数第k个元素
+// 遍历一次，定义两个相同指针，先让一个指针走k步，然后再同时前进
+ListNode* FindKthToTail(ListNode* pListHead, unsigned int k) {
+    int count = 0;
+    ListNode* r = pListHead;
+    ListNode* tp = pListHead;
+    while (tp) {
+        if (count >= k)
+            r = r -> next;
+        tp = tp -> next;
+        count++;
+    }
+    return k > count ? nullptr : r;
+}
 
-
-
-
-
-
-
-
-
-
-
+// 遍历两次，先确认链表长度，然后再前进到需要的位置
+ListNode* FindKthToTail(ListNode* pListHead, unsigned int k) {
+    int count = 0;
+    ListNode* r = pListHead;
+    ListNode* tp = pListHead;
+    while (tp) {
+        count++;
+        tp = tp -> next;
+    }
+    int index = count - k;
+    while (index-- && r != nullptr) {
+        r = r -> next;
+    }
+    return r;
+}
