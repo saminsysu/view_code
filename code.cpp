@@ -369,3 +369,27 @@ ListNode* FindKthToTail(ListNode* pListHead, unsigned int k) {
     }
     return r;
 }
+
+// 替换字符串空格
+
+// 1. 统计空格字数；
+// 2. 从后往前替换空格，因为从后往前，每个空格后面的字符只需要移动一次。
+// 从前往后，当遇到第一个空格时，要移动第一个空格后所有的字符一次；当遇到第二个空格时，要移动第二个空格后所有的字符一次；以此类推。所以总的移动次数会更多。
+// 3. 考虑字符串结束符'\0'
+
+void replaceSpace(char *str,int length) {
+    int count = 0; // 空格数
+    for (int i = 0; i < length; i++)
+        if (str[i] == ' ')
+            count++;
+    for (int i = length; i >= 0; i--) { // 将'\0'考虑在内，从后往前遍历
+        if (str[i] != ' ') {
+            str[i+count*2] = str[i];
+        } else {
+            count--;
+            str[i+2*count] = '%';
+            str[i+2*count+1] = '2';
+            str[i+2*count+2] = '0';
+        }
+    }
+}
