@@ -321,6 +321,21 @@ ListNode* ReverseList(ListNode* pHead) {
     return r;
 }
 
+// 逆序打印链表
+
+// 1. 可以先用上述方法翻转链表，再输出链表，这样会遍历两次链表
+// 2. 递归，只需遍历一次
+
+vector<int> r; // 不要把变量定义在递归中
+vector<int> printListFromTailToHead(ListNode* head) {
+    if (head != nullptr) {
+        if (head -> next != nullptr)
+            r = printListFromTailToHead(head -> next);
+        r.push_back(head -> val);
+    }
+    return r;
+}
+
 // 删除链表中重复元素
 
 ListNode* deleteDuplication(ListNode* pHead)
