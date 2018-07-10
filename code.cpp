@@ -8,14 +8,13 @@ void quick_sort(int[] input, int l, int h) {
     while (i < j) {
         while (i < j && pivot < input[j])
             j--;
-        if (i < j)
-            input[i] = input[j]; 
         while (i < j && input[i] <= pivot) {
             i++;
         if (i < j)
             input[j] = input[i]; 
         }
     }
+    input[l] = input[j];
     input[j] = pivot;
     quick_sort(input, l, j - 1);
     quick_sort(input, j + 1, h);
