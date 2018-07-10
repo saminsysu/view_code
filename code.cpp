@@ -459,3 +459,27 @@ TreeNode* deserialize(char **str) {
     node -> right = deserialize(str);
     return node;
 }
+
+/* 输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。
+如果是则输出Yes,否则输出No。假设输入的数组的任意两个数字都互不相同。
+二叉搜索树的后序遍历
+*/
+bool VerifySquenceOfBST(vector<int> sequence) {
+    if (sequence.empty())
+        return false;
+    return VerifySquenceOfBST(sequence, 0, sequence.size() - 1);
+    
+}
+bool VerifySquenceOfBST(vector<int> &sequence, int left_start, int root_index) {
+    if (left_start >= root_index)
+        return true;
+    int right_start = left_start;
+    for (; right_start < root_index; right_start++)
+        if (sequence[right_start] > sequence[root_index])
+            break;
+    for (int i = right_start; i < root_index; i++)
+        if (sequence[i] < sequence[root_index])
+            return false;
+    return VerifySquenceOfBST(sequence, left_start, right_start - 1) && VerifySquenceOfBST(sequence, right_start, root_index - 1);
+}
+
