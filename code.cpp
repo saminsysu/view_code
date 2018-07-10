@@ -408,3 +408,55 @@ void replaceSpace(char *str,int length) {
         }
     }
 }
+
+
+/* 请实现两个函数，分别用来序列化和反序列化二叉树
+1. 广度优先搜索
+2. 前序遍历
+*/
+
+char* Serialize(TreeNode *root) {    
+    string str;
+    Serialize(root, str);
+    char* r = new char[str.length()+1];
+    for (int i = 0; i < str.length(); i++)
+        r[i] = str[i];
+    r[str.length()] = '\0';
+    return r;
+}
+TreeNode* Deserialize(char *str) {
+    if (str == nullptr)
+        return nullptr;
+    TreeNode* r = deserialize(&str);
+    return r;
+}
+void Serialize(TreeNode *root, string &str) {
+    if (root) {
+        str.append(to_string(root->val));
+        str.append(",");
+        Serialize(root->left, str);
+        Serialize(root->right, str);
+    }
+    else {
+        str.append("#");
+        return;
+    }
+}
+TreeNode* deserialize(char **str) {
+    if (**str == '#') {
+        (*str)++;
+        return nullptr;
+    }
+    if (**str == '\0')
+        return node;
+    int num = 0;
+    while (**str != ',') {
+        num = 10 * num + (**str - '0');
+        (*str)++;
+    }
+    TreeNode *node = new TreeNode(num);
+    (*str)++;
+    node -> left = deserialize(str);
+    node -> right = deserialize(str);
+    return node;
+}
