@@ -483,3 +483,39 @@ bool VerifySquenceOfBST(vector<int> &sequence, int left_start, int root_index) {
     return VerifySquenceOfBST(sequence, left_start, right_start - 1) && VerifySquenceOfBST(sequence, right_start, root_index - 1);
 }
 
+
+/*
+正则表达式匹配
+
+请实现一个函数用来匹配包括'.'和'*'的正则表达式。模式中的字符'.'表示任意一个字符，
+而'*'表示它前面的字符可以出现任意次（包含0次）。 
+在本题中，匹配是指字符串的所有字符匹配整个模式。
+例如，字符串"aaa"与模式"a.a"和"ab*ac*a"匹配，但是与"aa.a"和"ab*a"均不匹配
+
+要分为几种情况：（状态机）
+1. 当第二个字符不为‘*’时：匹配就是将字符串和模式的指针都下移一个，不匹配就直接返回false
+2. 当第二个字符为'*'时：
+    匹配：
+        a.字符串下移一个，模式不动
+        b.字符串下移一个，模式下移两个
+        c.字符串不动，模式下移两个
+    不匹配：字符串下移不动，模式下移两个
+搞清楚这几种状态后，用递归实现即可
+*/
+
+bool match(char* str, char* pattern)
+{
+    if (*str == '\0' && *pattern == '\0')
+        return true;
+    if (*str != '\0' && *pattern == '\0')
+        return false;
+    if (*(pattern+1) == '*') {
+        if (*str == *pattern || (*pattern == '.' && *str != '\0')) 
+            return match(str, pattern+2) || match(str+1, pattern) || match(str+1, pattern+2);
+        return match(str, pattern+2);
+    } else {
+        if (*str == *pattern || *pattern == '.')
+            return match(str+1, pattern+1);
+        return false;
+    }
+} 
