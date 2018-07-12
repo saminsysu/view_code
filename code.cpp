@@ -519,3 +519,25 @@ bool match(char* str, char* pattern)
         return false;
     }
 } 
+
+/*
+数组中只出现一次的数字
+一个整型数组里除了两个数字之外，其他的数字都出现了两次。请写程序找出这两个只出现一次的数字。
+1. 数组全部元素进行异或，得到异或值；
+2. 根据异或值找出要找的两个数二进制表示中不同的一位（通过与一个只有一位为1的二进制数）；
+3. 根据上一步骤得到的数将数组分为两部分，然后分别异或
+*/
+
+void FindNumsAppearOnce(vector<int> data,int* num1,int *num2) {
+    int flag = 1;
+    int res = 0;
+    for (int i = 0; i < data.size(); i++)
+        res ^= data[i]; 
+    while((flag & res) == 0)
+        flag <<= 1;
+    for (int i = 0; i < data.size(); i++)
+        if (flag & data[i])
+            *num1 ^= data[i];
+        else
+            *num2 ^= data[i];
+}
