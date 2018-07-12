@@ -6,12 +6,14 @@ void quick_sort(int[] input, int l, int h) {
     int j = h;
     int pivot = input[l];
     while (i < j) {
-        while (i < j && pivot < input[j])
+        while (i < j && pivot <= input[j])
             j--;
         while (i < j && input[i] <= pivot) {
             i++;
         if (i < j)
-            input[j] = input[i]; 
+            int tp = input[j]
+            input[j] = input[i];
+            input[i] = tp; 
         }
     }
     input[l] = input[j];
