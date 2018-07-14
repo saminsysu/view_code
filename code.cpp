@@ -578,3 +578,66 @@ int MoreThanHalfNum_Solution(vector<int> numbers) {
     return 0;
 }
 
+// 二分查找
+// 非递归实现二分查找
+int BinarySearch(vector<int> data, int k) {
+    if (data.empty())
+        return -1;
+    int start = 0;
+    int end = data.size();
+    int mid;
+    while (start <= end) {
+        mid = (start + end) / 2;
+        if (data[mid] = k)
+            return mid;
+        else if (data[mid] < k)
+            start = mid + 1;
+        else
+            end = mid - 1;
+    }
+    return -1;
+}
+
+//递归实现二分查找
+
+int BinarySearch(vector<int> data, int k, int start, int end) {
+    if (data.empty())
+        return -1;
+    if (start < end)
+        return -1;
+    int mid = (start + end) >> 1;
+    if (data[mid] = k)
+        return mid;
+    else if (data[mid] < k)
+        return BinarySearch(data, k, mid+1, end);
+    else
+        return BinarySearch(data, k, start, mid-1);
+}
+
+/*
+统计一个数字k在排序数组中出现的次数
+一见到排序数组的第一反应必须是！！！二分查找！！！
+解法1：遍历一次；
+解法2：找到第一个k和最后一个k；
+解法3：找到k-0.5和k+0.5
+*/
+
+int GetNumberOfK(vector<int> data ,int k) {
+    return GetK(data, k+0.5) - GetK(data, k-0.5);
+}
+
+int GetK(vector<int>& data, double k) {
+    int start = 0;
+    int end = data.size() - 1;
+    int mid;
+    while (start <= end) {
+        mid = (start + end) / 2;
+        if (data[mid] < k)
+            start = mid + 1;
+        else if (data[mid] > k)
+            end = mid - 1;
+    }
+    return start;
+}
+
+
