@@ -62,7 +62,7 @@ void quick_sort(int[] arr, int start, int end) {
 	quick_sort(arr, i+1, end);
 }
 
-// 或者
+// 或者，节省了交换时创建的临时空间
 
 void quick_sort(int[] arr, int start, int end) {
 	if (start >= end || arr == nullptr)
