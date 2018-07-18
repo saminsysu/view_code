@@ -45,7 +45,6 @@ void insert_sort(int[] arr, int len) {
 void quick_sort(int[] arr, int start, int end) {
 	if (start >= end || arr == nullptr)
 		return ;
-	if (start < end)
 	int i = start;
 	int j = end;
 	int pivot = arr[start];
@@ -62,3 +61,28 @@ void quick_sort(int[] arr, int start, int end) {
 	quick_sort(arr, start, i-1);
 	quick_sort(arr, i+1, end);
 }
+
+// 或者
+
+void quick_sort(int[] arr, int start, int end) {
+	if (start >= end || arr == nullptr)
+		return ;
+	int i = start;
+	int j = end;
+	int pivot = arr[start];
+	while (i < j) {
+		while (i < j && pivot <= arr[j]) // 先从右边开始
+			j--;
+		if (i < j) // 必要条件
+			arr[i] = arr[j];
+		while (i < j && pivot >= arr[i])
+			i++;
+		if (i < j) // 必要条件
+			arr[j] == arr[i];
+	}
+	arr[i] = pivot;
+	quick_sort(arr, start, i-1);
+	quick_sort(arr, i+1, end);
+}
+
+
