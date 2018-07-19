@@ -91,7 +91,7 @@ void quick_sort(int[] arr, int start, int end) { // 含 end
 */
 
 void merge_sort(int arr[], int start, int end) { // 含 end
-	if (start >= end)
+	if (start >= end || arr == nullptr)
 		return;
 	int mid = (end + start) / 2; 
 	merge_sort(arr, start, mid); // 递归排序左边
@@ -132,7 +132,7 @@ void heap_sort(int arr[], int len) { // 升序
 }
 
 void build_heap(int arr[], int heap_size) {
-	if (heapSize <= 1)
+	if (heapSize <= 1 || arr == nullptr)
         return;
 	int index = heap_size / 2 - 1;
 	for (int i = index; i >= 0; i--) {
@@ -179,4 +179,60 @@ void adjust_heap(int arr[], int heap_size, int index) {
 }
 
 /* 希尔排序
+简单的插入排序中，如果待排序列是正序时，时间复杂度是O(n)，
+如果序列是基本有序的，使用直接插入排序效率就非常高。希尔排序就利用了这个特点。
+先将整个待排序列分割成为若干子序列分别进行插入排序，
+待整个序列中的记录基本有序时再对全体记录进行一次插入排序。
 */
+
+void shell_sort(int arr[], int len) {
+	if (len <= 1 || arr == nullptr)
+		return ;
+	int d = len / 2; // 增量初始值，可以设计一个增量序列
+	while (d >= 1) {
+		for (int i = d; i < len; i += d) {
+			int j = i - d;
+			int cur = arr[i]; // 保存i处的值，因为有可能被改变
+			while (j >= 0 && arr[i] < arr[j]) {
+				arr[j+d] = arr[j]; // 往后移
+				j -= d;
+			}
+			arr[j+d] = cur;
+		}
+		d /= 2;
+	}
+}
+
+/* 计数排序
+一个O(n)时间复杂度的排序算法，只不过有前提条件，
+就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间
+*/
+
+void count_sort(int arr[], int len) {
+	if (len <= 1 || arr == nullptr)
+		return ;
+	int max = arr[0];
+	for (int i = 1; i < len; i++)
+		if (max < arr[i])
+			max = arr[i];
+	int count[max+1] = {0};
+	for (int i = 0; i < len; i++)
+		count[arr[i]]++;
+	int k = 0;
+	for (int i = 0; i <= max; i++) {
+		int j = count[i];
+		while (j > 0) {
+			arr[k++] = i;
+			j--;
+		}
+	}
+
+}
+
+/* 基数排序
+*/
+
+/* 桶排序
+*/
+
+
