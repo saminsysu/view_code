@@ -62,9 +62,9 @@ void quick_sort(int[] arr, int start, int end) {
 	quick_sort(arr, i+1, end);
 }
 
-// 或者，节省了交换时创建的临时空间
+// 改进，节省了交换时创建的临时空间
 
-void quick_sort(int[] arr, int start, int end) {
+void quick_sort(int[] arr, int start, int end) { // 含 end
 	if (start >= end || arr == nullptr)
 		return ;
 	int i = start;
@@ -85,4 +85,98 @@ void quick_sort(int[] arr, int start, int end) {
 	quick_sort(arr, i+1, end);
 }
 
+/* 归并排序
+归并排序使用了递归分治的思想，先递归划分子问题，然后合并结果。
+把待排序列看成由两个有序的子序列，然后合并两个子序列。
+*/
 
+void merge_sort(int arr[], int start, int end) { // 含 end
+	if (start >= end)
+		return;
+	int mid = (end + start) / 2; 
+	merge_sort(arr, start, mid); // 递归排序左边
+	merge_sort(arr, mid+1, end); // 递归排序右边
+	int tp[end - start + 1];
+	int i = start;
+	int j = mid + 1;
+	int k = 0;
+	while (i <= mid && j <= end) {
+		if (arr[i] < arr[j])
+			tp[k++] = arr[i++];
+		else
+			tp[k++] = arr[j++];
+	}
+	while (i <= mid)
+		tp[k++] = arr[i++];
+	while (j <= end)
+		tp[k++] = arr[j++];
+	for (int i = 0; i < k; i++) {
+		arr[start+i] = tp[i];
+	}
+
+}
+
+/* 堆排序，包括1. 构建堆树（最大堆或大顶堆和最小堆或小顶堆）以及2. 调整堆
+堆树是是完全二叉树，因此节点i的子节点分别为2i+1和2i+2
+1. 构建堆树
+从最后一个非叶子节点开始构建，不断往前，直到根节点
+2. 当从堆顶移走元素时，将新增加的元素与左右子节点比较，需要不断往下调整
+*/
+
+void heap_sort(int arr[], int len) { // 升序
+	build_heap(arr, len);
+	for (int i = len - 1; i > 0; i--) {
+		swap(arr[0], arr[i]);
+		adjust_heap(arr, i, 0);
+	}
+}
+
+void build_heap(int arr[], int heap_size) {
+	if (heapSize <= 1)
+        return;
+	int index = heap_size / 2 - 1;
+	for (int i = index; i >= 0; i--) {
+		adjust_heap(arr, heap_size, index);
+	}
+
+}
+
+// 递归实现最大堆
+
+void adjust_heap(int arr[], int heap_size, int index) {
+	int index_max = index;
+	int index_left = index << 1 + 1;
+	int index_right = index << 1 + 2;
+	if (index_left < heap_size && arr[index_left] > arr[index])
+		index_max = index_left;
+	if (index_right < heap_size && arr[index_right] > arr[index])
+		index_max = index_right;
+	if (index != index_max) {
+        swap(arr[index], arr[index_max]);
+        maxHeapify(arr, heap_size, index_max);  // 每一次移动都需要看移动是否对子树有影响；可以使用迭代，也可以使用递归
+    }
+}
+
+// 迭代实现最大堆
+
+void adjust_heap(int arr[], int heap_size, int index) {
+	int index_max, index_left, index_right;
+	while {
+		index_max = index;
+		index_left = index << 1 + 1;
+		index_right = index << 1 + 2;
+		if (index_left < heap_size && arr[index_left] > arr[index])
+			index_max = index_left;
+		if (index_right < heap_size && arr[index_right] > arr[index])
+			index_max = index_right;
+		if (index != index_max) {
+	        swap(arr[index], arr[index_max]);
+	        index = index_max;  // 每一次移动都需要看移动是否对子树有影响；可以使用迭代，也可以使用递归
+	    } else {
+	    	break;
+	    }
+	}
+}
+
+/* 希尔排序
+*/

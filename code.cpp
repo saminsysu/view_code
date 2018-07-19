@@ -92,7 +92,9 @@ vector<int> GetLeastNumbers_Solution(vector<int> input, int k) { // 1. 建立 k 
 }
 
 void buildMaxHeap(vector<int> &input, int heapSize) {
-    int iParent = (heapSize - 1) / 2;
+    if (heapSize <= 1)
+        return;
+    int iParent = heapSize / 2 - 1;
     for (int i = iParent; i >= 0; i--) {
         maxHeapify(input, i, heapSize);
     }
