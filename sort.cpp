@@ -203,7 +203,7 @@ void shell_sort(int arr[], int len) {
 	}
 }
 
-/* 计数排序
+/* 计数排序，一种桶排序
 一个O(n)时间复杂度的排序算法，只不过有前提条件，
 就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间
 */
@@ -229,10 +229,51 @@ void count_sort(int arr[], int len) {
 
 }
 
-/* 基数排序
+/* 基数排序：基数排序(Radix Sort)是桶排序的扩展，
+它的基本思想是：将整数按位数切割成不同的数字，然后按每个位数分别比较。 
+具体做法是：将所有待比较数值统一为同样的数位长度，数位较短的数前面补零。
+然后，从最低位开始，依次进行一次排序。这样从最低位排序一直到最高位排序完成以后（不能从高到低）, 数列就变成一个有序序列。
 */
+void radix_sort(int arr[], int len) {
+	if (len <= 1 || arr == nullptr)
+		return ;
+	int max = arr[0];
+	for (int i = 1; i < len; i++)
+		if (max < arr[i])
+			max = arr[i];
+	for (int digit = 1; max / digit > 0; digit *= 10) {
+		count_sort(arr, digit);
+	}
+}
 
-/* 桶排序
+void count_sort(int arr[], int len, int digit) {
+	int ranges[10] = {0};
+	int tp[len];
+	for (int i = 0; i < len; i++) {
+		ranges[(arr[i]/digit)%10]++;
+	}
+	for (int i = 1; i < 10; i++) {
+		ranges[i] += ranges[i-1]; //统计本应该出现的位置
+	}
+	for (int i = len - 1; i >= 0; i--) { // 从后往前
+		tp[ranges[(arr[i]/digit)%10]-1] = arr[i];
+		ranges[(arr[i]/digit)%10]--;
+	}
+	for (int i = 0; i < len; i++)
+		arr[i] = tp[i];
+}
+
+
+/* 桶排序，关键是设置桶映射函数。把数据分组，放在一个个的桶中，
+然后对每个桶里面的在进行排序，桶本身是有序的。
+
+给定n个实数x1,x2,...,xn,求这n个实数在实轴上相邻2个数之间的最大差值M,要求设计线性的时间算法
+
+解法：
+
+取数列的最大值和最小值然后均分作桶。因为最大差值 M>= (Max-Min/(n-1)！所以，假如以
+(Max-Min/(n-1)为桶宽的话，答案一定不是属于同一个桶的两元素之差。
+因此，这样建桶，每次只保留桶里面的最大值和最小值即可。
 */
 
 
