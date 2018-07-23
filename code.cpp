@@ -641,5 +641,3 @@ int GetK(vector<int>& data, double k) {
     }
     return start;
 }
-
-
