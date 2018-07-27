@@ -1,25 +1,23 @@
 // 快排
-void quick_sort(int[] input, int l, int h) {
-    if (l >= h)
+void quick_sort(int *input, int start, int end) {
+    if (start >= end || input == nullptr)
         return;
-    int i = l;
-    int j = h;
-    int pivot = input[l];
+    int i = start;
+    int j = end;
+    int pivot = input[start];
     while (i < j) {
         while (i < j && pivot <= input[j])
             j--;
         while (i < j && input[i] <= pivot) {
             i++;
         if (i < j)
-            int tp = input[j]
-            input[j] = input[i];
-            input[i] = tp; 
+            swap(input[i], input[j]);
         }
     }
-    input[l] = input[j];
+    input[start] = input[j];
     input[j] = pivot;
-    quick_sort(input, l, j - 1);
-    quick_sort(input, j + 1, h);
+    quick_sort(input, start, j - 1);
+    quick_sort(input, j + 1, end);
 }
 
 // 根据前序和中序构建二叉树
@@ -226,7 +224,7 @@ TreeNode* KthNode(TreeNode* pRoot, int k)
 
 // 数组中重复的第一个数字
 
-bool duplicate(int numbers[], int length, int* duplication) {
+bool duplicate(int *numbers, int length, int* duplication) {
     if (length <= 0)
         return false;
     bool dup[length];

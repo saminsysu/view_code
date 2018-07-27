@@ -1,6 +1,6 @@
 /* 冒泡排序：每一次把最大的元素不断地往后冒
 */
-void bubble_sort(int[] arr, int len) {
+void bubble_sort(int *arr, int len) {
 	if (len == 0 || len == 1 || arr == nullptr)
 		return ;
 	for (int i = 0; i < len - 1; i++) // n个数，只需要冒n-1次
@@ -11,7 +11,7 @@ void bubble_sort(int[] arr, int len) {
 
 /* 选择排序：每一次把未排序序列中最小的元素放在未排序序列的最前面（排序序列的最后面）
 */
-void select_sort(int[] arr, int len) {
+void select_sort(int *arr, int len) {
 	if (len == 0 || len == 1 || arr == nullptr)
 		return ;
 	int min_index;
@@ -26,7 +26,7 @@ void select_sort(int[] arr, int len) {
 
 /* 插入排序：将未排序序列的第一个元素插入到排序序列的合适位置
 */
-void insert_sort(int[] arr, int len) {
+void insert_sort(int *arr, int len) {
 	if (len == 0 || len == 1 || arr == nullptr)
 		return ;
 	for (int i = 1; i < len; i++) { // 从数组第二个数开始
@@ -42,7 +42,30 @@ void insert_sort(int[] arr, int len) {
 
 /* 快速排序：选择一个基准，然后使得基准左边的元素不大于基准，基准右边的元素不小于基准
 */
-void quick_sort(int[] arr, int start, int end) {
+
+// 返回 pivot 的下标，将分区的代码提取出来
+
+void partition(int *arr, int start, int end) {
+	if (start > end || arr == nullptr || start < 0 || right < 0)
+		return -1;
+	int i = start;
+	int j = end;
+	int pivot = arr[start];
+	while (i < j) {
+		while (i < j && pivot <= arr[j]) // 先从右边开始
+			j--;
+		if (i < j) // 必要条件
+			arr[i] = arr[j]; // 挖空填空
+		while (i < j && pivot >= arr[i])
+			i++;
+		if (i < j) // 必要条件
+			arr[j] == arr[i];
+	}
+	arr[i] = pivot;
+	return i;
+}
+
+void quick_sort(int *arr, int start, int end) {
 	if (start >= end || arr == nullptr)
 		return ;
 	int i = start;
@@ -64,7 +87,7 @@ void quick_sort(int[] arr, int start, int end) {
 
 // 改进，节省了交换时创建的临时空间
 
-void quick_sort(int[] arr, int start, int end) { // 含 end
+void quick_sort(int *arr, int start, int end) { // 含 end
 	if (start >= end || arr == nullptr)
 		return ;
 	int i = start;
@@ -74,7 +97,7 @@ void quick_sort(int[] arr, int start, int end) { // 含 end
 		while (i < j && pivot <= arr[j]) // 先从右边开始
 			j--;
 		if (i < j) // 必要条件
-			arr[i] = arr[j];
+			arr[i] = arr[j]; // 挖空填空
 		while (i < j && pivot >= arr[i])
 			i++;
 		if (i < j) // 必要条件
@@ -83,6 +106,39 @@ void quick_sort(int[] arr, int start, int end) { // 含 end
 	arr[i] = pivot;
 	quick_sort(arr, start, i-1);
 	quick_sort(arr, i+1, end);
+}
+
+// 快排非递归实现，因为递归的本质是操作栈，所以使用栈可以实现快排
+
+void quick_sort(int *arr, int start, int end) { // 含 end
+	if (start >= end || arr == nullptr)
+		return ;
+	
+	stack<int> index;
+	index.push(end); // 先将end压入
+	index.push(start);
+
+	int i, j, index_of_pivot;
+
+	while (!index.empty()) {
+		i = index.top();
+		index.pop();
+		j = index.top();
+		index.pop();
+
+		index_of_pivot = partition(arr, i, j);
+
+		if (index_of_pivot - 1 > start) {
+			index.push(i - 1);
+			index.push(i);
+		}
+
+		if (index_of_pivot + 1 < end) {
+			index.push(j);
+			index.push(i + 1);
+		}
+
+	}
 }
 
 /* 归并排序
