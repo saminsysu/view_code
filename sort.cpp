@@ -113,7 +113,7 @@ void quick_sort(int *arr, int start, int end) { // 含 end
 void quick_sort(int *arr, int start, int end) { // 含 end
 	if (start >= end || arr == nullptr)
 		return ;
-	
+
 	stack<int> index;
 	index.push(end); // 先将end压入
 	index.push(start);
@@ -129,15 +129,14 @@ void quick_sort(int *arr, int start, int end) { // 含 end
 		index_of_pivot = partition(arr, i, j);
 
 		if (index_of_pivot - 1 > start) {
-			index.push(i - 1);
+			index.push(index_of_pivot - 1);
 			index.push(i);
 		}
 
 		if (index_of_pivot + 1 < end) {
 			index.push(j);
-			index.push(i + 1);
+			index.push(index_of_pivot + 1);
 		}
-
 	}
 }
 
