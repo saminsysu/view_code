@@ -641,3 +641,30 @@ int GetK(vector<int>& data, double k) {
     }
     return start;
 }
+
+/* 确定一个数的二进制表示中有多少个1
+*/
+
+int number_of_1(int num) {
+    int flag = 1;
+    int count = 0;
+    while (flag) {
+        if (num & flag) {
+            count++;
+        }
+        flag << 1; // 需要移动32位
+    }
+    return count;
+}
+
+// 优化，有多少个1则执行几次
+
+int number_of_1(int num) {
+    int count = 0;
+    while (num) {
+        num = num & (num - 1); // num & (num - 1) 后右边全变成0
+        count++;
+    }
+    return count;
+}
+
