@@ -695,3 +695,88 @@ void FindPath(TreeNode* root, int &expectNumber, vector<vector<int> > &paths, ve
         sum -= root -> val;
     }
 }
+
+/*
+输入一个复杂链表（每个节点中有节点值，以及两个指针，一个指向下一个节点，另一个特殊指针指向任意一个节点），
+返回结果为复制后复杂链表的head。
+*/
+
+struct RandomListNode {
+    int label;
+    struct RandomListNode *next, *random;
+    RandomListNode(int x) :
+        label(x), next(NULL), random(NULL) {
+    }
+};
+
+// 使用一个 map 保存 node 映射信息，空间换时间
+
+RandomListNode* Clone(RandomListNode* pHead)
+{
+    if (pHead == nullptr)
+        return nullptr;
+    map<RandomListNode*, RandomListNode*> node_map;
+    RandomListNode* cur = pHead;
+    RandomListNode* head = nullptr;
+    RandomListNode* copy_cur = nullptr;
+    while (cur) {
+        RandomListNode* temp = new RandomListNode(cur -> label);
+        node_map.insert(pair<RandomListNode*, RandomListNode*>(cur, temp));
+        if (head == nullptr) {
+            head = temp;
+            copy_cur = temp;
+        } else {
+            copy_cur -> next = temp;
+            copy_cur = copy_cur -> next;
+        }
+        cur = cur -> next;
+    }
+    cur = pHead;
+    copy_cur = head;
+    while (cur) {
+        if (cur -> random) {
+            copy_cur -> random = node_map[cur -> random];
+        }
+        cur = cur -> next;
+        copy_cur = copy_cur -> next;
+    }
+    return head;
+}
+
+// 优化，不使用额外空间。首先将复制结点放到原结点后面，然后操作特殊指针，最后再拆分（避免修改原链表）
+
+RandomListNode* Clone(RandomListNode* pHead)
+{
+    if (pHead == nullptr)
+        return nullptr;
+    RandomListNode* cur = pHead;
+    RandomListNode* head = nullptr;
+    while (cur) {
+        RandomListNode* temp = new RandomListNode(cur -> label);
+        temp -> next = cur -> next;
+        cur -> next = temp;
+        cur = cur -> next -> next;
+    }
+    cur = pHead;
+    while (cur) {
+        if (cur -> random) {
+            cur -> next -> random = cur -> random -> next;
+        }
+        cur = cur -> next -> next;
+    }
+    cur = pHead;
+    head = cur -> next;
+    RandomListNode* temp = nullptr;
+    while (cur) { // 注意还原原列表，原则上复制是只读不写
+        temp = cur -> next;
+        if (temp) {
+            cur -> next = temp -> next;
+        } else {
+            cur -> next = nullptr;
+        }
+        cur = temp;
+    }
+    return head;
+}
+
+
