@@ -666,3 +666,32 @@ int number_of_1(int num) {
     return count;
 }
 
+/* 
+输入一颗二叉树的跟节点和一个整数，打印出二叉树中结点值的和为输入整数的所有路径。
+路径定义为从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。
+*/
+
+vector<vector<int> > FindPath(TreeNode* root, int expectNumber) {
+    vector<vector<int> > paths;
+    if (root == nullptr)
+        return paths;
+    int sum = 0;
+    vector<int> path;
+    FindPath(root, expectNumber, paths, path, sum);
+    return paths;
+}
+void FindPath(TreeNode* root, int &expectNumber, vector<vector<int> > &paths, vector<int> &path, int &sum) {
+    if (root == nullptr)
+        return ;
+    if (root -> val <= expectNumber - sum) {
+        path.push_back(root -> val);
+        sum += root -> val;
+        if (root -> left == nullptr && root -> right == nullptr && sum == expectNumber) {
+            paths.push_back(path);
+        }
+        FindPath(root -> left, expectNumber, paths, path, sum);
+        FindPath(root -> right, expectNumber, paths, path, sum);
+        path.pop_back();
+        sum -= root -> val;
+    }
+}
