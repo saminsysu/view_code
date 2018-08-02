@@ -822,5 +822,15 @@ int FindGreatestSumOfSubArray(vector<int> array) {
     return max;
 }
 
-
-
+/* 从1到n，1（数位）出现的次数
+分别对每个数位为1时的数进行统计分析
+*/
+int NumberOf1Between1AndN_Solution(int n)
+{
+    int count = 0;
+    for (int i = 1; i <= n; i *= 10) {
+        int h = n / i, l = n % i;
+        count = count + (h + 8) / 10 * i + (h % 10 == 1) * (l + 1); // 加8是因为数位>=2、<=1需要分开讨论
+    }
+    return count;
+}
