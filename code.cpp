@@ -274,7 +274,7 @@ vector<string> Permutation(string str) {
 
 void _Permutation(vector<string> &result, string str, int start, int end) {
     if (start == end)
-        result.push_back(str);;
+        result.push_back(str);
     for (int i = start; i <= end; i++) {
         if (_isExisted(str, start, i-1, str[i]))
             continue;
