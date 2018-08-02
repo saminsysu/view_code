@@ -779,4 +779,48 @@ RandomListNode* Clone(RandomListNode* pHead)
     return head;
 }
 
+/* 连续子数组的最大和
+给一个数组，返回它的最大连续子序列的和
+*/
+
+int FindGreatestSumOfSubArray(vector<int> array) {
+    if (array.empty()) {
+        return 0;
+    }
+    int cur_max = 0;
+    int max = INT_MIN;
+    for (int i = 0; i < array.size(); i++) {
+        cur_max += array[i];
+        if (cur_max > max) {
+            max = cur_max;
+        }
+        if (cur_max < 0) {
+            cur_max = 0;
+        }
+    }
+    return max;
+}
+
+// 或者
+
+int FindGreatestSumOfSubArray(vector<int> array) {
+    if (array.empty()) {
+        return 0;
+    }
+    int cur_max = 0;
+    int max = INT_MIN;
+    for (int i = 0; i < array.size(); i++) {
+        if (cur_max <= 0) {
+            cur_max = array[i];
+        } else {
+            cur_max += array[i];
+        }
+        if (cur_max > max) {
+            max = cur_max;
+        }
+    }
+    return max;
+}
+
+
 
