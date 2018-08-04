@@ -834,3 +834,71 @@ int NumberOf1Between1AndN_Solution(int n)
     }
     return count;
 }
+
+/* 输出第n个丑数
+把只包含质因子2、3和5的数称作丑数（Ugly Number）。
+例如6、8都是丑数，但14不是，因为它包含质因子7。 
+习惯上我们把1当做是第一个丑数。求按从小到大的顺序的第N个丑数。
+*/
+
+int GetUglyNumber_Solution(int index) {
+    if (index < 1)
+        return 0;
+    int count = 1;
+    int i_two = 0, i_three = 0, i_five = 0;
+    int *arr = new int[index]; // 不能通过arr[index]创建数组
+    arr[0] = 1;
+    while (count < index) {
+        while ((arr[i_two] * 2) <= arr[count-1]) {
+            i_two++;
+        }
+        while ((arr[i_three] * 3) <= arr[count-1]) {
+            i_three++;
+        }
+        while ((arr[i_five] * 5) <= arr[count-1]) {
+            i_five++;
+        }
+        arr[count++] = min( min(arr[i_two] * 2, arr[i_three] * 3), arr[i_five] * 5);
+    }
+    return arr[count-1];
+}
+
+/* 输入两个链表，找出它们的第一个公共结点。
+先让长链表走k步使得长链表剩余长度和短链表一样，然后同时遍历到第一个相同结点。
+如果没有相同结点，会同时遍历到nullptr结点，返回nullptr。
+*/
+
+ListNode* FindFirstCommonNode(ListNode* pHead1, ListNode* pHead2) {
+    if (pHead1 == nullptr || pHead2 == nullptr)
+        return nullptr;
+    int len_1 = 0, len_2 = 0;
+    ListNode *cur_1 = pHead1, *cur_2 = pHead2;
+    while (cur_1) {
+        len_1++;
+        cur_1 = cur_1 -> next;
+    }
+    while (cur_2) {
+        len_2++;
+        cur_2 = cur_2 -> next;
+    }
+    ListNode *long_list_head, *short_list_head;
+    int steps;
+    if (len_1 > len_2) {
+        long_list_head = pHead1;
+        short_list_head = pHead2;
+        steps = len_1 - len_2;
+    } else {
+        long_list_head = pHead2;
+        short_list_head = pHead1;
+        steps = len_2 - len_1;
+    }
+    while (steps) {
+        long_list_head = long_list_head -> next;
+        steps--;
+    }
+    while (long_list_head != short_list_head) {
+        long_list_head = long_list_head -> next;
+        short_list_head = short_list_head -> next;
+    }
+    return long_list_head;
+}
