@@ -922,3 +922,47 @@ int FirstNotRepeatingChar(string str) {
     }
     return -1;
 }
+
+/* 二叉树的深度
+输入一棵二叉树，求该树的深度。从根结点到叶结点依次经过的结点（含根、叶结点）形成树的一条路径，最长路径的长度为树的深度。
+*/
+
+// 递归
+
+int TreeDepth(TreeNode* pRoot)
+{
+    if (pRoot == nullptr)
+        return 0;
+    int left = TreeDepth(pRoot -> left);
+    int right = TreeDepth(pRoot -> right);
+    return left > right ? (left + 1) : (right + 1);
+}
+
+// 广搜
+
+int TreeDepth(TreeNode* pRoot)
+{
+    if (pRoot == nullptr)
+        return 0;
+    queue<TreeNode*> node_queue;
+    node_queue.push(pRoot);
+    int depth = 0;
+    TreeNode* temp;
+    int size;
+    while (!node_queue.empty()) {
+        size = node_queue.size();
+        depth++;
+        while (size > 0) {
+            temp = node_queue.front();
+            node_queue.pop();
+            if (temp -> left) {
+                node_queue.push(temp -> left);
+            }
+            if (temp -> right) {
+                node_queue.push(temp -> right);
+            }
+            size--;
+        }
+    }
+    return depth;
+}
