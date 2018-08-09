@@ -243,7 +243,7 @@ void adjust_heap(int arr[], int heap_size, int index) {
 void shell_sort(int arr[], int len) {
 	if (len <= 1 || arr == nullptr)
 		return ;
-	int d = len / 2; // 增量初始值，可以设计一个增量序列
+	int d = len / 2; // 增量初始值，设计一个减量序列，最后为1
 	while (d >= 1) {
 		for (int i = d; i < len; i += d) {
 			int j = i - d;
