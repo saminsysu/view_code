@@ -146,29 +146,30 @@ void quick_sort(int *arr, int start, int end) { // 含 end
 */
 
 void merge_sort(int arr[], int start, int end) { // 含 end
-	if (start >= end || arr == nullptr)
-		return;
-	int mid = (end + start) / 2; 
-	merge_sort(arr, start, mid); // 递归排序左边
-	merge_sort(arr, mid+1, end); // 递归排序右边
-	int tp[end - start + 1];
-	int i = start;
-	int j = mid + 1;
-	int k = 0;
-	while (i <= mid && j <= end) {
-		if (arr[i] < arr[j])
-			tp[k++] = arr[i++];
-		else
-			tp[k++] = arr[j++];
-	}
-	while (i <= mid)
-		tp[k++] = arr[i++];
-	while (j <= end)
-		tp[k++] = arr[j++];
-	for (int i = 0; i < k; i++) {
-		arr[start+i] = tp[i];
-	}
-
+    if (start >= end || arr == nullptr)
+        return;
+    int mid = (end + start) / 2;
+    merge_sort(arr, start, mid); // 递归排序左边
+    merge_sort(arr, mid+1, end); // 递归排序右边
+    int *tp = new int[end - start + 1];
+    int i = start;
+    int j = mid + 1;
+    int k = 0;
+    while (i <= mid && j <= end) {
+        if (arr[i] < arr[j])
+            tp[k++] = arr[i++];
+        else
+            tp[k++] = arr[j++];
+    }
+    while (i <= mid)
+        tp[k++] = arr[i++];
+    while (j <= end)
+        tp[k++] = arr[j++];
+    for (int i = 0; i < k; i++) {
+        arr[start+i] = tp[i]; // 注意 arr 从 start 开始！
+    }
+    delete [] tp; // 释放临时的空间
+    tp = nullptr;
 }
 
 /* 堆排序，包括1. 构建堆树（最大堆或大顶堆和最小堆或小顶堆）以及2. 调整堆
@@ -193,7 +194,6 @@ void build_heap(int arr[], int heap_size) {
 	for (int i = index; i >= 0; i--) {
 		adjust_heap(arr, heap_size, index);
 	}
-
 }
 
 // 递归实现最大堆
