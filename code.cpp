@@ -966,3 +966,57 @@ int TreeDepth(TreeNode* pRoot)
     }
     return depth;
 }
+
+/* 左旋转字符串
+可以直接用 string 的 substr，或者
+先分别翻转0～n-1 和 n~len（其中 n<len）的字符串，然后再翻转整个字符串
+*/
+
+string LeftRotateString(string str, int n) {
+    if (str.empty()) {
+        return str;
+    }
+    n = n % str.size();
+    if (n == 0) {
+        return str;
+    }
+    string str1 = str.substr(0, n);
+    string str2 = str.substr(n, str.size() - n);
+    return str2+str1;
+}
+
+/* 链表中环的入口
+先求出环的长度 len，再使用一个快结点先走 len 步，然后快慢结点同时走，直到相遇即为所求
+
+和 求链表倒数第 k 个结点解法相似
+*/
+ListNode* EntryNodeOfLoop(ListNode* pHead)
+{
+    if (pHead == nullptr || pHead -> next == nullptr || pHead -> next -> next == nullptr) {
+        return nullptr;
+    }
+    ListNode *first = pHead -> next, *second = pHead -> next -> next;
+    int loop_len = 0;
+    while (second -> next != nullptr && second -> next -> next != nullptr) {
+        if (second == first) {
+            loop_len++;
+            first = first -> next;
+            while (first != second) {
+                loop_len++;
+                first = first -> next;
+            }
+            break;
+        }
+        second = second -> next -> next;
+        first = first -> next;
+    }
+    first = second = pHead;
+    for (int i = 0; i < loop_len && first != nullptr; i++) {
+        first = first -> next;
+    }
+    while (first != second) {
+        first = first -> next;
+        second = second -> next;
+    }
+    return second;
+}
