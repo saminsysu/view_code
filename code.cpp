@@ -1020,3 +1020,37 @@ ListNode* EntryNodeOfLoop(ListNode* pHead)
     }
     return second;
 }
+
+/* 翻转单词顺序表
+方案一 使用栈辅助，后进先出
+方案二 先翻转每个单词，然后再翻转整个字符串
+*/
+
+string ReverseSentence(string str) {
+    stack<string> words;
+    if (str.empty()) {
+        return str;
+    }
+    int first = 0;
+    for (int i = 0; i < str.size(); i++) {
+        if (str[i] == ' ') {
+            words.push(str.substr(first, i - first));
+            first = i + 1;
+        }
+    }
+    words.push(str.substr(first, str.size() - first));
+    string r = "";
+    bool is_first = true;
+    int len = words.size();
+    for (int i = 0; i < len; i++) { // 注意此处用 len 而不是 words.size()，因为 words.size() 一直在变
+        if (is_first) {
+            is_first = false;
+        } else {
+            r += " ";
+        }
+        r += words.top();
+        words.pop();
+    }
+    return r;
+}
+
