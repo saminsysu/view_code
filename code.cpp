@@ -1177,3 +1177,62 @@ void reOrderArray(vector<int> &array) {
         }
     }
 }
+
+/* 扑克牌顺子
+*/
+
+bool IsContinuous( vector<int> numbers ) {
+    if (numbers.empty()) {
+        return false;
+    }
+    sort(numbers.begin(), numbers.end());
+    int num_of_kings = 0;
+    int diff = 0;
+    for (int i = 0; i < numbers.size(); i++) {
+        if (numbers[i] == 0) {
+            num_of_kings++;
+        } else {
+            if (i > 0 && numbers[i - 1] != 0) {
+                if (numbers[i - 1] == numbers[i]) {
+                    return false;
+                }
+                diff += numbers[i] - numbers[i - 1] - 1;
+            }
+        }
+    }
+    if (diff > num_of_kings) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+/* 和为 S 的连续正数序列（至少包括两个数）
+输出所有和为 S 的连续正数序列。序列内按照从小至大的顺序，序列间按照开始数字从小到大的顺序
+*/
+
+vector<vector<int> > FindContinuousSequence(int sum) {
+    vector<vector<int> > r;
+    if (sum <= 1) {
+        return r;
+    }
+    int start = 1, end = 1, _sum = 0;
+    while (end <= sum / 2 + 2 && start <= end) {
+        if (_sum < sum) {
+            _sum += end;
+            end++;
+        } else if (_sum == sum) {
+            vector<int> temp;
+            for (int j = start; j < end; j++) { // 不含 end
+                temp.push_back(j);
+            }
+            r.push_back(temp);
+            _sum -= start;
+            start++;
+        } else {
+            _sum -= start;
+            start++;
+        }
+    }
+    return r;
+}
