@@ -1079,3 +1079,50 @@ bool IsPopOrder(vector<int> pushV,vector<int> popV) {
         return true;
     }
 }
+
+/* 按之字形顺序打印二叉树
+请实现一个函数按照之字形打印二叉树，即第一行按照从左到右的顺序打印，
+第二层按照从右至左的顺序打印，第三行按照从左到右的顺序打印，其他行以此类推。
+
+交替使用两个栈来实现
+*/
+
+vector<vector<int> > Print(TreeNode* pRoot) {
+    vector<vector<int> > r;
+    if (pRoot == nullptr) {
+        return r;
+    }
+    stack<TreeNode*> sta1;
+    stack<TreeNode*> sta2;
+    sta1.push(pRoot);
+    while (!sta1.empty() || !sta2.empty()) {
+        vector<int> vec;
+        if (!sta1.empty()) {
+            while (!sta1.empty()) {
+                TreeNode* temp = sta1.top();
+                vec.push_back(temp -> val);
+                sta1.pop();
+                if (temp -> left) {
+                    sta2.push(temp -> left);
+                }
+                if (temp -> right) {
+                    sta2.push(temp -> right);
+                }
+            }
+        } else {
+            while (!sta2.empty()) {
+                TreeNode* temp = sta2.top();
+                vec.push_back(temp -> val);
+                sta2.pop();
+                if (temp -> right) {
+                    sta1.push(temp -> right);
+                }
+                if (temp -> left) {
+                    sta1.push(temp -> left);
+                }
+            }
+        }
+        r.push_back(vec);
+    }
+    return r;
+} 
