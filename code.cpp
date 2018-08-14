@@ -1126,3 +1126,54 @@ vector<vector<int> > Print(TreeNode* pRoot) {
     }
     return r;
 } 
+
+/* 调整数组元素顺序使奇数位于偶数前面
+
+输入一个整数数组，实现一个函数来调整该数组中数字的顺序，
+使得所有的奇数位于数组的前半部分，所有的偶数位于数组的后半部分，
+并保证奇数和奇数，偶数和偶数之间的相对位置不变。
+
+方案一 使用额为空间
+方案二 类插入排序
+*/
+
+
+void reOrderArray(vector<int> &array) {
+    if (array.empty()) {
+        return ;
+    }
+    vector<int> odds;
+    vector<int> evens;
+    for (int i = 0; i < array.size(); i++) {
+        if (array[i] & 1) { // 奇数
+            odds.push_back(array[i]);
+        } else {
+            evens.push_back(array[i]);
+        }
+    }
+    for (int i = 0; i < odds.size(); i++) {
+        array[i] = odds[i];
+    }
+    for (int i = 0; i < evens.size(); i++) {
+        array[i+odds.size()] = evens[i];
+    }
+}
+
+// 类插入排序
+
+void reOrderArray(vector<int> &array) {
+    if (array.empty()) {
+        return ;
+    }
+    int index_of_odds = 0, temp;
+    for (int i = 0; i < array.size(); i++) {
+        if (array[i] & 1) {
+            temp = array[i];
+            for (int j = i; j > index_of_odds; j--) {
+                array[j] = array[j - 1];
+            }
+            array[index_of_odds] = temp;
+            index_of_odds++;
+        }
+    }
+}
