@@ -1276,3 +1276,45 @@ ListNode* Merge(ListNode* pHead1, ListNode* pHead2)
     }
     return head;
 }
+
+/* 二叉树的下一个结点
+给定一个二叉树和其中的一个结点，请找出中序遍历顺序的下一个结点并且返回。
+注意，树中的结点不仅包含左右子结点，同时包含指向父结点的指针。
+*/
+
+struct TreeLinkNode {
+    int val;
+    struct TreeLinkNode *left;
+    struct TreeLinkNode *right;
+    struct TreeLinkNode *next;
+    TreeLinkNode(int x) :val(x), left(NULL), right(NULL), next(NULL) { 
+    }
+};
+
+TreeLinkNode* GetNext(TreeLinkNode* pNode)
+{
+    TreeLinkNode* next = pNode -> right;
+    if (next == nullptr) {
+        TreeLinkNode* par = pNode -> next, *kid = pNode;
+        if (par != nullptr) {
+            if (par -> left == kid) {
+                return par;
+            } else {
+                kid = par;
+                par = kid -> next;
+                while (par && par -> right == kid) {
+                    kid = par;
+                    par = par -> next;
+                }
+                return par;
+            }
+        } else {
+            return nullptr;
+        }
+    } else {
+        while (next -> left != nullptr) {
+            next = next -> left;
+        }
+        return next;
+    }
+}
