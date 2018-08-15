@@ -1236,3 +1236,43 @@ vector<vector<int> > FindContinuousSequence(int sum) {
     }
     return r;
 }
+
+/* 合并两个排序的链表
+*/
+
+ListNode* Merge(ListNode* pHead1, ListNode* pHead2)
+{
+    if (pHead1 == nullptr) {
+        return pHead2;
+    }
+    if (pHead2 == nullptr) {
+        return pHead1;
+    }
+    ListNode *head = nullptr, *cur = nullptr;
+    while (pHead1 != nullptr && pHead2 != nullptr) {
+        if (pHead1 -> val < pHead2 -> val) {
+            if (head == nullptr) {
+                head = cur = pHead1;
+            } else {
+                cur -> next = pHead1;
+                cur = cur -> next;
+            }
+            pHead1 = pHead1 -> next;
+        } else {
+            if (head == nullptr) {
+                head = cur = pHead2;
+            } else {
+                cur -> next = pHead2;
+                cur = cur -> next;
+            }
+            pHead2 = pHead2 -> next;
+        }
+    }
+    if (pHead1 != nullptr) {
+        cur -> next = pHead1;
+    }
+    if (pHead2 != nullptr) {
+        cur -> next = pHead2;
+    }
+    return head;
+}
