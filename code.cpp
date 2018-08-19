@@ -1318,3 +1318,40 @@ TreeLinkNode* GetNext(TreeLinkNode* pNode)
         return next;
     }
 }
+
+/* 旋转数组的最小数字
+输入一个非减排序的数组的一个旋转，输出旋转数组的最小元素。
+例如数组{3,4,5,1,2}为{1,2,3,4,5}的一个旋转，该数组的最小值为1。
+*/
+
+int minNumberInRotateArray(vector<int> rotateArray) {
+    if (rotateArray.empty()) {
+        return 0;
+    }
+    for (int i = 1; i < rotateArray.size(); i++) {
+        if (rotateArray[i] < rotateArray[i - 1] ) {
+            return rotateArray[i];
+        }
+    }
+    return rotateArray[0];
+}
+
+// 二分查找
+
+int minNumberInRotateArray(vector<int> rotateArray) {
+    if (rotateArray.empty()) {
+        return 0;
+    }
+    int left = 0, right = rotateArray.size() - 1, mid;
+    while (left < right) {
+        mid = (left + right) / 2;
+        if (rotateArray[mid] > rotateArray[right]) {
+            left = mid + 1;
+        } else if (rotateArray[mid] < rotateArray[right]) {
+            right = mid;
+        } else {
+            right--;
+        }
+    }
+    return rotateArray[left];
+}
