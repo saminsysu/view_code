@@ -1434,3 +1434,90 @@ int LastRemaining_Solution(int n, int m)
     return childs.front();
 }
 
+/* 斐波那契数列
+*/
+int Fibonacci(int n) {
+    if (n == 0) {
+        return 0;
+    }
+    if (n == 1) {
+        return 1;
+    }
+    int first = 0, second = 1, r;
+    for (int i = 2; i <= n; i++) {
+        r = first + second;
+        first = second;
+        second = r;
+    }
+    return r;
+}
+
+/* 跳台阶
+一只青蛙一次可以跳上1级台阶，也可以跳上2级。求该青蛙跳上一个n级的台阶总共有多少种跳法（先后次序不同算不同的结果）。
+f(n) = f(n - 1) + f(n - 2), n > 2 (最后一步走1级或者2级可到n级的跳法)
+f(1) = 1
+f(2) = 2
+*/
+int jumpFloor(int number) {
+    if (number == 1) {
+        return 1;
+    }
+    if (number == 2) {
+        return 2;
+    }
+    int first = 1, second = 2, r;
+    for (int i = 3; i <= number; i++) {
+        r = first + second;
+        first = second;
+        second = r;
+    }
+    return r;
+}
+
+/* 变态跳台阶
+一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法。
+f(n) = f(n - 1) + f(n - 2) + ... + f(1) + 1
+f(n - 1) = f(n - 2) + ... + f(1) + 1
+相减可知，f(n) = 2 * f(n - 1)
+*/
+int jumpFloorII(int number) {
+    if (number == 1) {
+        return 1;
+    }
+    if (number == 2) {
+        return 2;
+    }
+    int r = 2;
+    for (int i = 3; i <= number; i++) {
+        r *= 2;
+        
+    }
+    return r;
+}
+
+/* 矩形覆盖
+我们可以用2*1的小矩形横着或者竖着去覆盖更大的矩形。请问用n个2*1的小矩形无重叠地覆盖一个2*n的大矩形，总共有多少种方法？
+f(n) = f(n - 1) + f(n - 2), n > 2 (先竖着排或先横着排)
+f(1) = 1
+f(2) = 2
+*/
+
+int rectCover(int number) {
+    if (number < 1) {
+        return 0;
+    }
+    if (number == 1) {
+        return 1;
+    }
+    if (number == 2) {
+        return 2;
+    }
+    int first = 1, second = 2, r;
+    for (int i = 3; i <= number; i++) {
+        r = first + second;
+        first = second;
+        second = r;
+    }
+    return r;
+}
+
