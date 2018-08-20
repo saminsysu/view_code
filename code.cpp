@@ -1355,3 +1355,41 @@ int minNumberInRotateArray(vector<int> rotateArray) {
     }
     return rotateArray[left];
 }
+
+/* 判断二叉树是否平衡
+输入一棵二叉树，判断该二叉树是否是平衡二叉树。
+*/
+
+bool IsBalanced_Solution(TreeNode* pRoot) {
+    int depth;
+    return IsBalanced_Solution(pRoot, depth);
+}
+bool IsBalanced_Solution(TreeNode* pRoot, int &depth) {
+    if (pRoot == nullptr) {
+        depth = 0;
+        return true;
+    }
+    int left_depth;
+    bool is_left_balanced = IsBalanced_Solution(pRoot -> left, left_depth);
+    int right_depth;
+    bool is_right_balanced = IsBalanced_Solution(pRoot -> right, right_depth);
+    if (is_left_balanced && is_right_balanced && abs(left_depth - right_depth) <= 1) {
+        depth = max(left_depth, right_depth) + 1;
+        return true;
+    } else {
+        depth = max(left_depth, right_depth) + 1;
+        return false;
+    }
+}
+
+/* 求二叉树深度
+*/
+
+int get_depth(TreeNode* pRoot) {
+    if (pRoot == nullptr) {
+        return 0;
+    }
+    int left_depth = get_depth(pRoot -> left);
+    int right_depth = get_depth(pRoot -> right);
+    return left_depth > right_depth ? (left_depth + 1) : (right_depth + 1);
+}
