@@ -1393,3 +1393,44 @@ int get_depth(TreeNode* pRoot) {
     int right_depth = get_depth(pRoot -> right);
     return left_depth > right_depth ? (left_depth + 1) : (right_depth + 1);
 }
+
+/* 用两个栈实现队列
+栈1保存插入数据，栈2保存将要输出的数据。
+当要输出数据时，判断栈二是否为空，如果为空，将栈1的所有元素复制到栈2中，然后弹出栈2首元素，否则直接弹出栈2首元素。
+*/
+
+/* 圆圈中最后的数
+随机指定一个数m,让编号为0的小朋友开始报数。每次喊到m-1的那个小朋友要出列唱首歌,
+然后可以在礼品箱中任意的挑选礼物,并且不再回到圈中,从他的下一个小朋友开始,
+继续0...m-1报数....这样下去....直到剩下最后一个小朋友。
+使用链表实现
+*/
+
+int LastRemaining_Solution(int n, int m)
+{
+    if (n <= 0 || m <= 0) {
+        return -1;
+    }
+    list<int> childs;
+    for (int i = 0; i < n; i++) {
+        childs.push_back(i);
+    }
+    auto iter = childs.begin();
+    for (int i = 0; i < n - 1; ++i) {
+        for (int j = 1; j < m; ++j) {
+            ++iter;
+            if (iter == childs.end()) {
+                iter = childs.begin();
+            }
+        }
+        auto next = ++iter;
+        if (next == childs.end()) {
+            next = childs.begin();
+        }
+        --iter;
+        childs.erase(iter);
+        iter = next;
+    }
+    return childs.front();
+}
+
