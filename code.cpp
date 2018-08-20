@@ -1521,3 +1521,85 @@ int rectCover(int number) {
     return r;
 }
 
+/* 二叉搜索树与双向链表
+输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表。要求不能创建任何新的结点，只能调整树中结点指针的指向。
+*/
+
+// 中序遍历
+
+TreeNode* Convert(TreeNode* pRootOfTree)
+{
+    if (pRootOfTree == nullptr) {
+        return nullptr;
+    }
+    TreeNode *temp = pRootOfTree, *list_head, *pre = nullptr;
+    stack<TreeNode*> nodes;
+    while (temp != nullptr || !nodes.empty()) {
+        while (temp != nullptr) {
+            nodes.push(temp);
+            temp = temp -> left;
+        }
+        temp = nodes.top();
+        nodes.pop();
+        if (pre != nullptr) {
+            pre -> right = temp;
+            temp -> left = pre;
+        } else {
+            list_head = temp;
+        }
+        pre = temp;
+        temp = temp -> right;
+    }
+    return list_head;
+}
+
+TreeNode* Convert(TreeNode* pRootOfTree)
+{
+    if (pRootOfTree == nullptr) {
+        return nullptr;
+    }
+    if (pRootOfTree -> left == nullptr && pRootOfTree -> right == nullptr) {
+        return pRootOfTree;
+    }
+    TreeNode *head_of_left = Convert(pRootOfTree -> left);
+    TreeNode *temp = head_of_left;
+    while (temp != nullptr && temp -> right != nullptr) {
+        temp = temp -> right;
+    }
+    if (temp != nullptr) {
+        temp -> right = pRootOfTree;
+        pRootOfTree -> left = temp;
+    }
+    TreeNode *head_of_right = Convert(pRootOfTree -> right);
+    if (head_of_right != nullptr) {
+        head_of_right -> left = pRootOfTree;
+        pRootOfTree -> right = head_of_right;
+    }
+    return head_of_left == nullptr ? pRootOfTree : head_of_left;
+}
+
+
+TreeNode* left_last;
+TreeNode* Convert(TreeNode* pRootOfTree)
+{
+    if (pRootOfTree == nullptr) {
+        return nullptr;
+    }
+    if (pRootOfTree -> left == nullptr && pRootOfTree -> right == nullptr) {
+        left_last = pRootOfTree;
+        return pRootOfTree;
+    }
+    TreeNode *head_of_left = Convert(pRootOfTree -> left);
+    if (left_last != nullptr) {
+        left_last -> right = pRootOfTree;
+        pRootOfTree -> left = left_last;
+    }
+    left_last = pRootOfTree;
+    TreeNode *head_of_right = Convert(pRootOfTree -> right);
+    if (head_of_right != nullptr) {
+        head_of_right -> left = pRootOfTree;
+        pRootOfTree -> right = head_of_right;
+    }
+    return head_of_left == nullptr ? pRootOfTree : head_of_left;
+}
+
