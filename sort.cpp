@@ -45,7 +45,7 @@ void insert_sort(int *arr, int len) {
 
 // 返回 pivot 的下标，将分区的代码提取出来
 
-void partition(int *arr, int start, int end) {
+int partition(int *arr, int start, int end) {
 	if (start > end || arr == nullptr || start < 0 || right < 0)
 		return -1;
 	int i = start;
@@ -263,25 +263,28 @@ void shell_sort(int arr[], int len) {
 就是待排序的数要满足一定的范围的整数，而且计数排序需要比较多的辅助空间
 */
 
-void count_sort(int arr[], int len) {
+void count_sort(int *arr, int len) {
 	if (len <= 1 || arr == nullptr)
 		return ;
-	int max = arr[0];
-	for (int i = 1; i < len; i++)
+	int max = INT_MIN;
+	int *temp = new int[len];
+	for (int i = 0; i < len; ++i) {
+		temp[i] = arr[i];
 		if (max < arr[i])
 			max = arr[i];
-	int count[max+1] = {0};
-	for (int i = 0; i < len; i++)
-		count[arr[i]]++;
-	int k = 0;
-	for (int i = 0; i <= max; i++) {
-		int j = count[i];
-		while (j > 0) {
-			arr[k++] = i;
-			j--;
-		}
 	}
-
+	int count[max+1] = {0};
+	for (int i = 0; i < len; ++i)
+		count[arr[i]]++;
+	for (int i = 1; i <= len; ++i) {
+		ranges[i] += ranges[i-1]; //统计本应该出现的位置
+	}
+	for (int i = len - 1; i >= 0; --i) { // 从后往前，使得稳定排序
+		arr[count[temp[i]] - 1] = temp[i];
+		count[temp[i]]--;
+	}
+	delete [] temp;
+	temp = nullptr;
 }
 
 /* 基数排序：基数排序(Radix Sort)是桶排序的扩展，
@@ -289,7 +292,7 @@ void count_sort(int arr[], int len) {
 具体做法是：将所有待比较数值统一为同样的数位长度，数位较短的数前面补零。
 然后，从最低位开始，依次进行一次排序。这样从最低位排序一直到最高位排序完成以后（不能从高到低）, 数列就变成一个有序序列。
 */
-void radix_sort(int arr[], int len) {
+void radix_sort(int *arr, int len) {
 	if (len <= 1 || arr == nullptr)
 		return ;
 	int max = arr[0];
@@ -297,25 +300,27 @@ void radix_sort(int arr[], int len) {
 		if (max < arr[i])
 			max = arr[i];
 	for (int digit = 1; max / digit > 0; digit *= 10) {
-		count_sort(arr, digit);
+		count_sort(arr, len, digit);
 	}
 }
 
-void count_sort(int arr[], int len, int digit) {
+void count_sort(int *arr, int len, int digit) {
 	int ranges[10] = {0};
-	int tp[len];
+	int *tp = new int[len];
 	for (int i = 0; i < len; i++) {
 		ranges[(arr[i]/digit)%10]++;
 	}
 	for (int i = 1; i < 10; i++) {
 		ranges[i] += ranges[i-1]; //统计本应该出现的位置
 	}
-	for (int i = len - 1; i >= 0; i--) { // 从后往前
+	for (int i = len - 1; i >= 0; i--) { // 从后往前，使得稳定排序
 		tp[ranges[(arr[i]/digit)%10]-1] = arr[i];
 		ranges[(arr[i]/digit)%10]--;
 	}
 	for (int i = 0; i < len; i++)
 		arr[i] = tp[i];
+	delete [] tp;
+	tp = nullptr;
 }
 
 
