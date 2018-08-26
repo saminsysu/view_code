@@ -18,7 +18,7 @@ void select_sort(int *arr, int len) {
 	for (int i = 0; i < len - 1; i++) // n个数，只需要选择n-1次
 		min_index = i;
 		for (int j = i + 1; j < len; j++)
-			if (arr[j] < min)
+			if (arr[j] < arr[min_index])
 				min_index = j;
 		if (i != min_index)
 			swap(arr[i], arr[min_index]);
