@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <stack>
 using namespace std;
 
 #define ALPHABET_SIZE 26
@@ -46,6 +47,130 @@ int trie_search(trie_node* root, char* key) {
         return 0;
     else
         return node -> count;
+}
+
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
+// 二叉树前序遍历
+
+// 递归实现
+
+void pre_order(TreeNode * root, vector &result) {
+    if (root == nullptr) {
+        return;
+    }
+    result.push_back(roo -> val);
+    if (root -> left != nullptr) {
+        pre_order(root -> left, result);
+    }
+    if (root -> right != nullptr) {
+        pre_order(root -> right, result);
+    }
+
+}
+
+// 非递归实现
+
+void pre_order(TreeNode * root, vector &result) {
+    if (root == nullptr) {
+        return;
+    }
+    stack<TreeNode *> nodes;
+    TreeNode *temp = root;
+    while (temp != nullptr || !nodes.empty()) {
+        while (temp != nullptr) {
+            result.push_back(temp -> val);
+            nodes.push_back(temp);
+            temp = temp -> left;
+        }
+        temp = nodes.top();
+        nodes.pop();
+        temp = temp -> right;
+    }
+}
+
+// 二叉树中序遍历
+
+// 递归实现
+
+void in_order(TreeNode * root, vector &result) {
+    if (root == nullptr) {
+        return;
+    }
+    if (root -> left != nullptr) {
+        in_order(root -> left, result);
+    }
+    result.push_back(roo -> val);
+    if (root -> right != nullptr) {
+        in_order(root -> right, result);
+    }
+}
+
+// 非递归实现
+
+void in_order(TreeNode * root, vector &result) {
+    if (root == nullptr) {
+        return;
+    }
+    stack<TreeNode *> nodes;
+    TreeNode *temp = root;
+    while (temp != nullptr || !nodes.empty()) {
+        while (temp != nullptr) {
+            nodes.push_back(temp);
+            temp = temp -> left;
+        }
+        temp = nodes.top();
+        nodes.pop();
+        result.push_back(temp -> val);
+        temp = temp -> right;
+    }
+}
+
+
+// 二叉树后序遍历
+
+// 递归实现
+void post_order(TreeNode * root, vector &result) {
+    if (root == nullptr) {
+        return;
+    }
+    if (root -> left != nullptr) {
+        post_order(root -> left, result);
+    }
+    if (root -> right != nullptr) {
+        post_order(root -> right, result);
+    }
+    result.push_back(roo -> val);
+}
+
+// 非递归实现
+
+void post_order(TreeNode * root, vector &result) {
+    if (root == nullptr) {
+        return;
+    }
+    stack<TreeNode *> nodes;
+    TreeNode *temp = root, *last_visit = nullptr;
+    while (temp != nullptr || !nodes.empty()) {
+        while (temp != nullptr) {
+            nodes.push_back(temp);
+            temp = temp -> left;
+        }
+        temp = nodes.top();
+        if (temp -> right == nullptr || temp -> right == last_visit) {
+            result.push_back(temp -> val);
+            nodes.pop();
+            last_visit = temp;
+            temp = nullptr;
+        } else {
+            temp = temp -> right;
+        }
+    }
 }
 
 int main()
