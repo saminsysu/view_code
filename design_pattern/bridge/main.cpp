@@ -2,8 +2,10 @@
 #include "concrete_shape.h"
 
 template<typename T> void safe_delete(T*& ptr) {
-	delete ptr;
-	ptr = nullptr;
+	if (ptr != nullptr) {
+		delete ptr;
+		ptr = nullptr;
+	}
 }
 
 int main() {
