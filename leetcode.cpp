@@ -46,3 +46,68 @@ int minCut(string s) {
     }
     return count[0] - 1;
 }
+
+/* There are N children standing in a line. Each child is assigned a rating value.
+You are giving candies to these children subjected to the following requirements:
+Each child must have at least one candy.
+Children with a higher rating get more candies than their neighbors.
+What is the minimum candies you must give?
+*/
+
+// 三次遍历
+
+int candy(vector<int> &ratings) {
+    int n = ratings.size();
+    if (n == 0) {
+        return 0;
+    }
+    vector<int> cnt(n, 1);
+    for (int i = 1; i < n; ++i) {
+        if (ratings[i] > ratings[i - 1]) {
+            cnt[i] = cnt[i - 1] + 1;
+        }
+    }
+    for (int i = n - 1; i > 0; --i) {
+        if (ratings[i] < ratings[i - 1]) {
+            cnt[i - 1] = max(cnt[i] + 1, cnt[i - 1]);
+        }
+    }
+    int count = 0;
+    for (int i = 0; i < n; ++i) {
+        count += cnt[i];
+    }
+    return count;
+}
+
+// 一次遍历
+
+int candy(vector<int> &ratings) {
+    int n = ratings.size();
+    if (n == 0) {
+        return 0;
+    }
+    int pre = 1, cnt = 1, len = 0;
+    for (int i = 1; i < n; ++i) {
+        if (ratings[i] >= ratings[i - 1]) {
+            if (len > 0) {
+                cnt += (1 + len) * len / 2;
+                if (len >= pre) {
+                    cnt += len - pre + 1;
+                }
+                pre = 1;
+                len = 0;
+            }
+            pre = (ratings[i] == ratings[i - 1]) ? 1 : pre + 1;
+            cnt += pre;
+        } else {
+            len++;
+        }
+    }
+    if (len > 0) {
+        cnt += (1 + len) * len / 2;
+        if (len >= pre) {
+            cnt += len - pre + 1;
+        }
+    }
+    return cnt;
+}
