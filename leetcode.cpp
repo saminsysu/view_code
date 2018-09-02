@@ -111,3 +111,47 @@ int candy(vector<int> &ratings) {
     }
     return cnt;
 }
+
+/* Given a triangle, find the minimum path sum from top to bottom. 
+Each step you may move to adjacent numbers on the row below.
+
+For example, given the following triangle
+
+[
+     [2],
+    [3,4],
+   [6,5,7],
+  [4,1,8,3]
+]
+
+The minimum path sum from top to bottom is11(i.e., 2 + 3 + 5 + 1 = 11).
+
+*/
+
+int minimumTotal(vector<vector<int> > &triangle) {
+    int n = triangle.size();
+    if (n == 0) {
+        return 0;
+    }
+    vector<int> dp1(n, 0), dp2(n, 0);
+    vector<int> *ptr1 = &dp1, *ptr2 = &dp2;
+    (*ptr1)[0] = triangle[0][0];
+    for (int i = 1; i < n; i++) {
+        swap(ptr1, ptr2);
+        for (int j = 0; j < triangle[i].size(); j++) {
+            if (j == 0) {
+                (*ptr1)[0] = (*ptr2)[0] + triangle[i][0];
+            } else if (j == triangle[i].size() - 1) {
+                (*ptr1)[j] = (*ptr2)[j-1] + triangle[i][j];
+            } else {
+                (*ptr1)[j] = (triangle[i][j] + (*ptr2)[j-1] > triangle[i][j] + (*ptr2)[j]) ? 
+                triangle[i][j] + (*ptr2)[j] : triangle[i][j] + (*ptr2)[j-1];
+            }
+        }
+    }
+    int minimum = INT_MAX;
+    for (int i = 0; i < n; i++) {
+        minimum = min(minimum, (*ptr1)[i]);
+    }
+    return minimum;
+}
