@@ -47,6 +47,31 @@ int minCut(string s) {
     return count[0] - 1;
 }
 
+/* Given a string s, find the longest palindromic substring in s. 
+You may assume that the maximum length of s is 1000.
+*/
+
+string longestPalindrome(string s) {
+    if (s.empty()) {
+        return {};
+    }
+    int len = s.size();
+    vector<vector<bool> > dp(len, vector<bool>(len, false));
+    vector<int> count(len+1, INT_MAX);
+    int longest = 0, start, end;
+    for (int i = len - 1; i >= 0; i--) {
+        for (int j = i; j < len; j++) {
+            dp[i][j] = s[i] == s[j] && (j - i <= 1 || dp[i + 1][j - 1]);
+            if (dp[i][j] && j - i >= longest) {
+                start = i;
+                end = j;
+                longest = j - i + 1;
+            }
+        }
+    }
+    return s.substr(start, longest);
+}
+
 /* There are N children standing in a line. Each child is assigned a rating value.
 You are giving candies to these children subjected to the following requirements:
 Each child must have at least one candy.
