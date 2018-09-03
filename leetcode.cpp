@@ -128,6 +128,8 @@ The minimum path sum from top to bottom is11(i.e., 2 + 3 + 5 + 1 = 11).
 
 */
 
+// 自顶向下
+
 int minimumTotal(vector<vector<int> > &triangle) {
     int n = triangle.size();
     if (n == 0) {
@@ -154,4 +156,20 @@ int minimumTotal(vector<vector<int> > &triangle) {
         minimum = min(minimum, (*ptr1)[i]);
     }
     return minimum;
+}
+
+// 自底向上
+
+int minimumTotal(vector<vector<int> > &triangle) {
+    int n = triangle.size();
+    if (n == 0) {
+        return 0;
+    }
+    vector<int> dp(triangle[n - 1]);
+    for (int i = n - 2; i >= 0; --i) {
+        for (int j = 0; j < triangle[i].size(); j++) {
+            dp[j] = min(dp[j], dp[j + 1]) + triangle[i][j];
+        }
+    }
+    return dp[0];
 }
