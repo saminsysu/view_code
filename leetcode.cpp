@@ -173,3 +173,40 @@ int minimumTotal(vector<vector<int> > &triangle) {
     }
     return dp[0];
 }
+
+/* Given a collection of integers that might contain duplicates, S, return all possible subsets.
+
+Elements in a subset must be in non-descending order.
+The solution set must not contain duplicate subsets.
+
+For example,
+If S =[1,2,2], a solution is:
+
+[
+  [2],
+  [1],
+  [1,2,2],
+  [2,2],
+  [1,2],
+  []
+]
+*/
+
+vector<vector<int> > subsetsWithDup(vector<int> &S) {
+    int n = S.size();
+    if (n == 0) {
+        return {};
+    }
+    vector<vector<int> > res(1);
+    sort(S.begin(), S.end());
+    int start_index, size;
+    for (int i = 0; i < n; ++i) {
+        start_index = (i >= 1 && S[i] == S[i - 1]) ? size : 0;
+        size = res.size();
+        for (int j = start_index; j < size; ++j) {
+            res.push_back(res[j]);
+            res.back().push_back(S[i]);
+        }
+    }
+    return res;
+}
