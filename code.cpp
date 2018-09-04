@@ -787,15 +787,14 @@ int FindGreatestSumOfSubArray(vector<int> array) {
     if (array.empty()) {
         return 0;
     }
-    int cur_max = 0;
-    int max = INT_MIN;
-    for (int i = 0; i < array.size(); i++) {
-        cur_max += array[i];
-        if (cur_max > max) {
-            max = cur_max;
+    int sum = 0, max = INT_MIN;
+    for (int i = 0; i < array.size(); ++i) {
+        sum += array[i];
+        if (sum > max) {
+            max = sum;
         }
-        if (cur_max < 0) {
-            cur_max = 0;
+        if (sum < 0) {
+            sum = 0;
         }
     }
     return max;

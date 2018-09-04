@@ -20,6 +20,7 @@ bool wordBreak(string s, unordered_set<string> &dict) {
         }
     }
     return dp[s.size()];
+}
 
 
 /* Given a string s, partition s such that every substring of the partition is a palindrome.
@@ -272,4 +273,25 @@ int minDistance(string word1, string word2) {
         }
     }
     return dp[len1][len2];
+}
+
+/* Given an integer array nums, find the contiguous subarray 
+(containing at least one number) which has the largest sum and return its sum.
+*/
+
+int maxSubArray(vector<int>& nums) {
+    if (nums.empty()) {
+        return 0;
+    }
+    int sum = 0, max = INT_MIN;
+    for (int i = 0; i < nums.size(); ++i) {
+        sum += nums[i];
+        if (sum > max) {
+            max = sum;
+        }
+        if (sum < 0) {
+            sum = 0;
+        }
+    }
+    return max;
 }
