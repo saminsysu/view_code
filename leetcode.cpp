@@ -378,3 +378,21 @@ int coinChange(vector<int>& coins, int amount) {
     }
     return dp[amount] > amount ? -1 : dp[amount];
 }
+
+/* Given a positive integer n, find the least number of perfect 
+square numbers (for example, 1, 4, 9, 16, ...) which sum to n.
+*/
+
+int numSquares(int n) {
+    vector<int> dp(n+1, n+1);
+    dp[0] = 0;
+    int j;
+    for (int i = 1; i <= n; i++) {
+        j = 1;
+        while (j * j <= i) {
+            dp[i] = min(dp[i], dp[i - j * j] + 1);
+            ++j;
+        }
+    }
+    return dp[n];
+}
