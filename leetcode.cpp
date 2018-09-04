@@ -295,3 +295,36 @@ int maxSubArray(vector<int>& nums) {
     }
     return max;
 }
+
+/* A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below).
+
+The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below).
+
+Now consider if some obstacles are added to the grids. How many unique paths would there be?
+*/
+
+// 状态转移方程：f(i, j) = f(i - 1, j) + f(i, j - 1)
+
+int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+    if (obstacleGrid.empty()) {
+        return 0;
+    }
+    int m = obstacleGrid.size(), n = obstacleGrid[0].size();
+    int dp[m][n] = {0};
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            if (obstacleGrid[i][j] == 1) {
+                dp[i][j] = 0;
+                continue;
+            }
+            if (i == 0) {
+                dp[i][j] = (j > 0) ? dp[i][j - 1] : 1;
+            } else if (j == 0) {
+                dp[i][j] = (i > 0) ? dp[i - 1][j] : 1;
+            } else {
+                dp[i][j] = dp[i][j-1] + dp[i-1][j];
+            }
+        }
+    }
+    return dp[m - 1][n - 1];     
+}
