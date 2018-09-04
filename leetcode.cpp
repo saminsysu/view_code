@@ -303,7 +303,10 @@ The robot can only move either down or right at any point in time. The robot is 
 Now consider if some obstacles are added to the grids. How many unique paths would there be?
 */
 
-// 状态转移方程：f(i, j) = f(i - 1, j) + f(i, j - 1)
+// 状态转移方程：f(i, j) = f(i - 1, j) + f(i, j - 1), i > 0, j > 0
+//                       f(i - 1, j), i > 0, j == 0
+//                       f(i, j - 1), i == 0, j > 0
+//                       obstacleGrid[0][0], i == 0, j == 0
 
 int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
     if (obstacleGrid.empty()) {
