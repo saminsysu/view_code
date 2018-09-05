@@ -396,3 +396,34 @@ int numSquares(int n) {
     }
     return dp[n];
 }
+
+/* Given a string containing just the characters '(' and ')', 
+find the length of the longest valid (well-formed) parentheses substring.
+*/
+
+// 括号题使用栈实现
+
+int longestValidParentheses(string s) {
+    if (s.empty())
+        return 0;
+    stack<pair<int, char> > stk;
+    int maxLen = 0, len = 0;
+    for (int i = 0; i < s.size(); i++) {
+        if (s[i] == '(') {
+            stk.push(make_pair(i, s[i]));
+        } else {
+            if (stk.empty() || stk.top().second == ')') {
+                stk.push(make_pair(i, s[i]));
+            } else {
+                stk.pop();
+                if (stk.empty()) {
+                    len = i + 1;
+                } else {
+                    len = i - stk.top().first;
+                }
+                maxLen = max(maxLen, len);
+            }
+        }
+    }
+    return maxLen;
+}
