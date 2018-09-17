@@ -1602,3 +1602,49 @@ TreeNode* Convert(TreeNode* pRootOfTree)
     return head_of_left == nullptr ? pRootOfTree : head_of_left;
 }
 
+/* return the smallest value M such that lcm(N+1, N+2, ..., M) = lcm(1, 2, ..., M).
+*/
+
+// 获取小于等于 n 的所有质数
+vector<int> get_primes(int n) {
+    vector<int> primes;
+    vector<bool> composite(n + 1, false);
+    for (int prime = 2; prime <= n; prime++) {
+        if (!composite[prime]) {
+            for (int i = prime + prime; i <= n; i += prime) {
+                composite[i] = true;
+            }
+            primes.push_back(prime);
+        }
+    }
+    return primes;
+}
+
+// 获取 x 质数分解后质数 p 的指数
+int get_exponent(int x, int p) {
+    int exp = 0;
+    while (x % p == 0) {
+        exp++;
+        x /= p;
+    }
+    return exp;
+}
+
+// 获取满足条件的最小的 m
+int get_min(int n) {
+    int res = 2;
+    for (int prime : get_primes(n)) {
+        int max_exp = 0;
+        int i = prime;
+        while (i <= n) {
+            max_exp = max(max_exp, get_exponent(i, prime));
+            i += prime; // 并非 +1，+prime 为了保证可以整除 prime
+        }
+        // 定位满足质因数指数大于等于 max_exp 的的最小值
+        while (get_exponent(i, prime) < max_exp) {
+            i += prime;
+        }
+        res = max(res, i);
+    }
+    return res;
+}
