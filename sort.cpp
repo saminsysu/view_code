@@ -5,7 +5,7 @@ void bubble_sort(int *arr, int len) {
 		return ;
 	for (int i = 0; i < len - 1; i++) // n个数，只需要冒n-1次
 		for (int j = 0; j < len - 1 - i; j++)
-			if (arr[j] > arr[j++])
+			if (arr[j] > arr[j+1])
 				swap(a[j], a[j+1]);
 }
 
@@ -156,10 +156,7 @@ void merge_sort(int arr[], int start, int end) { // 含 end
     int j = mid + 1;
     int k = 0;
     while (i <= mid && j <= end) {
-        if (arr[i] < arr[j])
-            tp[k++] = arr[i++];
-        else
-            tp[k++] = arr[j++];
+        tp[k++] = (arr[i] < arr[j] ? arr[i++] : arr[j++]);
     }
     while (i <= mid)
         tp[k++] = arr[i++];
@@ -168,7 +165,7 @@ void merge_sort(int arr[], int start, int end) { // 含 end
     for (int i = 0; i < k; i++) {
         arr[start+i] = tp[i]; // 注意 arr 从 start 开始！
     }
-    delete [] tp; // 释放临时的空间
+    delete [] tp; // 释放临时的空间并置为 nullptr，避免野指针
     tp = nullptr;
 }
 
@@ -208,7 +205,7 @@ void adjust_heap(int arr[], int heap_size, int index) {
 		index_max = index_right;
 	if (index != index_max) {
         swap(arr[index], arr[index_max]);
-        maxHeapify(arr, heap_size, index_max);  // 每一次移动都需要看移动是否对子树有影响；可以使用迭代，也可以使用递归
+        adjust_heap(arr, heap_size, index_max);  // 每一次移动都需要看移动是否对子树有影响；可以使用迭代，也可以使用递归
     }
 }
 
@@ -216,7 +213,7 @@ void adjust_heap(int arr[], int heap_size, int index) {
 
 void adjust_heap(int arr[], int heap_size, int index) {
 	int index_max, index_left, index_right;
-	while {
+	while (true) {
 		index_max = index;
 		index_left = index << 1 + 1;
 		index_right = index << 1 + 2;
@@ -248,7 +245,7 @@ void shell_sort(int arr[], int len) {
 		for (int i = d; i < len; i += d) {
 			int j = i - d;
 			int cur = arr[i]; // 保存i处的值，因为有可能被改变
-			while (j >= 0 && arr[i] < arr[j]) {
+			while (j >= 0 && cur < arr[j]) {
 				arr[j+d] = arr[j]; // 往后移
 				j -= d;
 			}
@@ -267,24 +264,23 @@ void count_sort(int *arr, int len) {
 	if (len <= 1 || arr == nullptr)
 		return ;
 	int max = INT_MIN;
-	int *temp = new int[len];
+	int temp[len];
 	for (int i = 0; i < len; ++i) {
 		temp[i] = arr[i];
 		if (max < arr[i])
 			max = arr[i];
 	}
-	int count[max+1] = {0};
+	int count[max+1];
+	memset(count, 0, sizeof(count));
 	for (int i = 0; i < len; ++i)
 		count[arr[i]]++;
 	for (int i = 1; i <= len; ++i) {
-		ranges[i] += ranges[i-1]; //统计本应该出现的位置
+		count[i] += count[i-1]; //统计本应该出现的位置
 	}
 	for (int i = len - 1; i >= 0; --i) { // 从后往前，使得稳定排序
 		arr[count[temp[i]] - 1] = temp[i];
 		count[temp[i]]--;
 	}
-	delete [] temp;
-	temp = nullptr;
 }
 
 /* 基数排序：基数排序(Radix Sort)是桶排序的扩展，
@@ -305,24 +301,20 @@ void radix_sort(int *arr, int len) {
 }
 
 void count_sort(int *arr, int len, int digit) {
-	int ranges[10] = {0};
-	int *tp = new int[len];
+	int count[10] = {0};
+	int temp[len];
 	for (int i = 0; i < len; i++) {
-		ranges[(arr[i]/digit)%10]++;
+		temp[i] = arr[i];
+		count[(arr[i]/digit)%10]++;
 	}
 	for (int i = 1; i < 10; i++) {
-		ranges[i] += ranges[i-1]; //统计本应该出现的位置
+		count[i] += count[i-1]; //统计本应该出现的位置
 	}
 	for (int i = len - 1; i >= 0; i--) { // 从后往前，使得稳定排序
-		tp[ranges[(arr[i]/digit)%10]-1] = arr[i];
-		ranges[(arr[i]/digit)%10]--;
+		arr[count[(temp[i]/digit)%10]-1] = temp[i];
+		count[(temp[i]/digit)%10]--;
 	}
-	for (int i = 0; i < len; i++)
-		arr[i] = tp[i];
-	delete [] tp;
-	tp = nullptr;
 }
-
 
 /* 桶排序，关键是设置桶映射函数。把数据分组，放在一个个的桶中，
 然后对每个桶里面的在进行排序，桶本身是有序的。
