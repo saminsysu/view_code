@@ -8,7 +8,7 @@ using namespace std;
 
 // 循环实现
 
-int binary_find(int arr[], int length, int num) {
+int binary_find(int *arr, int length, int num) {
 	if (arr == nullptr || length <= 0) {
 		return -1;
 	}
@@ -30,7 +30,7 @@ int binary_find(int arr[], int length, int num) {
 
 // 递归实现
 
-int binary_find(int arr[], int start, int end, int num) {
+int binary_find(int *arr, int start, int end, int num) {
 	if (arr == nullptr || start < end) {
 		return -1;
 	}

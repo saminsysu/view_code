@@ -85,7 +85,7 @@ void pre_order(TreeNode * root, vector &result) {
     while (temp != nullptr || !nodes.empty()) {
         while (temp != nullptr) {
             result.push_back(temp -> val);
-            nodes.push_back(temp);
+            nodes.push(temp);
             temp = temp -> left;
         }
         temp = nodes.top();
@@ -121,7 +121,7 @@ void in_order(TreeNode * root, vector &result) {
     TreeNode *temp = root;
     while (temp != nullptr || !nodes.empty()) {
         while (temp != nullptr) {
-            nodes.push_back(temp);
+            nodes.push(temp);
             temp = temp -> left;
         }
         temp = nodes.top();
@@ -158,7 +158,7 @@ void post_order(TreeNode * root, vector &result) {
     TreeNode *temp = root, *last_visit = nullptr;
     while (temp != nullptr || !nodes.empty()) {
         while (temp != nullptr) {
-            nodes.push_back(temp);
+            nodes.push(temp);
             temp = temp -> left;
         }
         temp = nodes.top();
